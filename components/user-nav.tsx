@@ -15,10 +15,16 @@ import { useAuth } from "@/contexts/auth-context"
 import { LogOut, Settings, User, LayoutDashboard } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 
 export function UserNav() {
   const { user, logout, isDemoMode } = useAuth()
   const router = useRouter()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleLogout = async () => {
     try {
@@ -27,6 +33,10 @@ export function UserNav() {
     } catch (error) {
       console.error("Error logging out:", error)
     }
+  }
+
+  if (!mounted) {
+    return null
   }
 
   if (!user) {
